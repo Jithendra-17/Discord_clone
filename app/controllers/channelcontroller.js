@@ -1,5 +1,4 @@
 // const { channelmembers, users } = require('../models');
-const { where } = require('sequelize');
 const { servermember, channelmember } = require('../models');
 const db=require('../models');
 const server_model = require('../models/server_model');

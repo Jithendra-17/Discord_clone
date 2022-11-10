@@ -39,7 +39,7 @@ const getallservers=async(req,res)=>{
              include : [
             {
                 model : db.servers,
-               attributes:['name'],
+               attributes:['name','image'],
                include:[
                 {
                     model:db.channels,
