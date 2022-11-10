@@ -11,7 +11,7 @@ let io=socketio(server);
 
 var corsOptions={
     // origin:'http://192.168.1.140:3000/login'
-    origin:'*'
+    origin:'*',
 }
 
 app.use(cors(corsOptions));
