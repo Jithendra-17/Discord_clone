@@ -1,6 +1,5 @@
 const { channelmember } = require('../models');
 const cloudinary = require('../config/cloudinaryconfig');
-// const multer = require("multer");
 
 const db=require('../models');
 const User=db.users;
