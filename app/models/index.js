@@ -39,6 +39,7 @@ const sequelize=new Sequelize(dbConfig.DB,dbConfig.USER,dbConfig.PASSWORD,
     db.notification=require('./notification_model')(sequelize,DataTypes);
     db.serverchanneluser=require('./serverchanneluser')(sequelize,DataTypes);
     db.permission=require('./role_model')(sequelize,DataTypes);
+    db.userroles=require('./user_role_model')(sequelize,DataTypes);
 
     db.sequelize.sync({force:false}).then(()=>{
         console.log('Sync done');
@@ -72,6 +73,12 @@ const sequelize=new Sequelize(dbConfig.DB,dbConfig.USER,dbConfig.PASSWORD,
 //relation between channels and permissions
     // db.serverchanneluser.hasMany(db.permission);
     // db.permission.belongsTo(db.serverchanneluser);
+
+//realtion between roles and users
+    db.users.hasMany(db.userroles);
+    db.userroles.belongsTo(db.users);
+    db.permission.hasMany(db.userroles);
+    db.userroles.belongsTo(db.permission);
     
 
     

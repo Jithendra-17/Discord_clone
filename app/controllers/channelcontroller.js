@@ -1,4 +1,5 @@
 // const { channelmembers, users } = require('../models');
+const { Socket } = require('socket.io');
 const { servermember, channelmember } = require('../models');
 const db=require('../models');
 const server_model = require('../models/server_model');
@@ -7,6 +8,8 @@ const User=db.users;
 const Channelmember=db.channelmember;
 const Servermember=db.servermember;
 const Serverchanneluser=db.serverchanneluser;
+const io=require('../server');
+
 
 //To createChannel by the user
 const createChannel=async(req,res)=>{
@@ -79,29 +82,35 @@ const getchannel=async(req,res)=>{
 }
 
 const sendmsg=async(req,res)=>{
-    let info={
-        id:req.body.id,
-       // name:req.body.name,
-        message:req.body.message,
-    }
+    // let info={
+    //     id:req.body.id,
+    //    // name:req.body.name,
+    //     message:req.body.message,
+    // }
+    
     try{
-        const channel=await Channel.findOne({where:{id:id}});
-        io.on('connection', socket => {
-            socket.on('new-user', name => {
-            //  users[socket.id] = name
-              socket.broadcast.emit('user-connected', name)
-            })
-            socket.on('send-chat-message', message => {
-              socket.broadcast.emit('chat-message', { message: message, /*name: users[socket.id]*/ })
-            })
-            // socket.on('disconnect', () => {
-            //   socket.broadcast.emit('user-disconnected', users[socket.id])
-            //   delete users[socket.id]
-            // })
-          })
+        const channel=await Channel.findOne({where:{id:req.body.id}});
+        const user=await Serverchanneluser.findOne({where:{userId:req.userId,channelId:req.body.id,serverId:channel.serverId}});
+
+        res.send(user);
+    //     if(user){
+    //         io.on('connection', socket => {
+    // console.log("A new user just connected");
+    //         socket.on('disconnect',()=>console.log('disconnected'))
+    //     })
+    // }
     }
     catch(err){res.send(err.message)}
+    
 }
+
+console.log(sendmsg)
+// if(sendmsg.user){
+//     io.on('connection', socket => {
+// console.log("A new user just connected");
+//     socket.on('disconnect',()=>console.log('disconnected'))
+// })
+// }
 
 
 //Join a channel by an user so that the junction table gets updated.
@@ -111,28 +120,6 @@ const joinchannel=async(req,res)=>{
         // let channel=await Channel.findOne({where:{id:req.body.id,private_channel:false}});
         let channel=await Channel.findOne({where:{id:id}});
         const sermem=await Servermember.findOne({where:{userId:req.userId,serverId:channel.serverId}});
-
-        // console.log(channel.name)
-    //    if(channel && channel.private_channel==false && sermem) {
-    //   let info={
-    //     userId:req.userId,
-    //     channelId:id,
-    //   }
-     
-    //     const data=await Channelmember.create(info);
-    //    // const serdata=await Servermember.create({userId:req.userId,serverId:channel.serverId})
-    //     const serverchannel=await Serverchanneluser.create({
-            
-    //         userId:req.userId,
-    //         private:channel.private_channel,
-    //         serverId:channel.serverId,
-    //         role:1,
-    //         channelId:id})
-
-        
-    //         res.status(200).json({channelmemeberdata:data,serverchanneldata:serverchannel});
-          
-    // }
 
     if((channel && channel.private_channel==false)&&(!sermem || sermem))
     {
@@ -212,5 +199,5 @@ else{res.send("Not accessable")}
 
 
 module.exports={
-    createChannel,getchannel,sendmsg,joinchannel,getusersofchannel,
+    createChannel,sendmsg,getchannel,joinchannel,getusersofchannel,
 }

@@ -17,7 +17,7 @@ const result = await cloudinary.uploader.upload(req.file.path);
 
 
     const server=await Server.create( 
-        {name:req.body.name,
+        {name:req.body.servername,
         image:result.secure_url,
         created_by:req.userId,});
     const addserver=await Servermember.create({

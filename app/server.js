@@ -7,7 +7,11 @@ const http=require('http');
 const socketio=require('socket.io');
 let server=http.createServer(app);
 let io=socketio(server);
-
+module.exports=io;
+// app.use((req,res,next)=>{
+//     req.io=io;
+//     return next();
+// })
 
 var corsOptions={
     // origin:'http://192.168.1.140:3000/login'
