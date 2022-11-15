@@ -1,47 +1,45 @@
 const db=require('../models');
 const Message=db.messages;
 const io=require('../server');
+// let socket=io();
 // const io=require('socket.io')(5000);
 const sendmsg=async(req,res)=>{
-    // let info={
-    //     msg:req.body.msg,
-        
-    // }
-    // try{
-    // const msg=await Message.create(info);
-    // io.on('connection', (socket) => {
-    //     socket.on('chat message', msg => {
-    //       socket.broadcast.emit('chat message', socket.id+":"+msg);
-    //       console.log('message is '+msg);
-    //       res.sendstaus(200);
-    //     });
-    //   });
-    // }
-    // catch(err){ res.send(err.message)}
-    res.send('hi')
-   
-}
-const data=async(req,res)=>{
-const channel=await db.channels.findOne({where:{id:req.body.id}});
-const user=await db.serverchanneluser.findOne({where:{userId:req.userId,channelId:req.body.id,serverId:channel.serverId}});
+res.send('hi')   
 }
 
-// console.log(data);
+
+// const data=async(req,res)=>{
+// const channel=await db.channels.findOne({where:{id:req.body.id}});
+// const user=await db.serverchanneluser.findOne({where:{userId:req.userId,channelId:req.body.id,serverId:channel.serverId}});
+// }
 
 
-io.on('connection',(socket)=>{
-  console.log('user connected')
-  socket.on('message',(data)=>{
-    console.log(data);
-  })
-  socket.on('New message',(data)=>{
-    console.log(data);
-  })
-  socket.on('disconnect',()=>{
-    console.log('User disconnected');
-  })
-  io.emit('emit msg',{ name1:'dj'})
+
+
+// io.on('connection',socket=>{
+//   const data=async(req,res)=>{
+//     const ch=await db.serverchanneluser.findOne({where:{id:req.body.id}});
+//     socket.join(ch);
+//     socket.broadcast.to(ch).emit({messages:'postman'})
+//   }
+// })
+
+// const socket = new EventEmitter();
+
+const so=io.on('connection',(socket)=>{
+    console.log(socket.id)
 })
+  
+//   socket.on('New message',(data)=>{
+//     console.log(data);
+//   })
+//   socket.on('disconnect',()=>{
+//     console.log('User disconnected');
+//   })
+//   socket.emit('msg',{name:'jith'})
+//   io.emit('emit msg',{ name1:'dj'})
+// })
+
 
 
 
@@ -52,5 +50,5 @@ io.on('connection',(socket)=>{
 
 
 module.exports={
-    sendmsg
+    sendmsg,
 }

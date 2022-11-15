@@ -7,6 +7,8 @@ const Server=db.servers;
 const Servermember=db.servermember;
 const Channel=db.channels;
 const Serverchanneluser=db.serverchanneluser;
+const io=require('../server');
+
 
 //Create server
 const createserver=async(req,res)=>{
@@ -86,6 +88,7 @@ const joinserver=async(req,res)=>{
   try{
     const join=await Servermember.create({userId:req.userId,serverId:req.params.id});
     res.status(200).send(join);
+    io.emit('joined',{message:`user id ${req.userId} hopped into ${req.params.id}`})
 
   }
   catch(err){res.send(err.message)}
@@ -96,8 +99,8 @@ const leave=async(req,res)=>{
     try{
     const serverdata=await Servermember.destroy({where:{userId:req.userId,serverId:req.body.serverId}});
     const channeldata=await Serverchanneluser.destroy({where:{userId:req.userId,serverId:req.body.serverId}})
+        res.send("Deleted succesfully");
     
-    res.send("Deleted succesfully");
     }
     catch(err){res.send(err.message)}
 

@@ -13,7 +13,7 @@ module.exports=(sequelize,DataTypes)=>{
             unique:true,
         },
         dob:{
-            type:DataTypes.DATEONLY
+            type:DataTypes.STRING(10),
         },
         password:{
             type:DataTypes.STRING,

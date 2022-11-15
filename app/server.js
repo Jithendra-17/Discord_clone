@@ -1,24 +1,24 @@
 const express=require('express');
 const cors= require('cors');
+const bodyParser=require('body-parser');
+const multer=require('multer');
+// const upload=multer();
 const app=express();
-
 
 const http=require('http');
 const socketio=require('socket.io');
 let server=http.createServer(app);
 let io=socketio(server);
 module.exports=io;
-// app.use((req,res,next)=>{
-//     req.io=io;
-//     return next();
-// })
 
-var corsOptions={
-    // origin:'http://192.168.1.140:3000/login'
-    origin:'*',
-}
 
-app.use(cors(corsOptions));
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(cors({origin:'*'}));
+
+// app.use(upload.any())
 
 app.use(express.json());
 

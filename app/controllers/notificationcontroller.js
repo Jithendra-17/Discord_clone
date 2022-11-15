@@ -17,6 +17,7 @@ const notificationstatus=async(req,res)=>{
 }
 
 
+
 module.exports={
     notificationstatus
 }
