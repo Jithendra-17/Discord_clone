@@ -86,10 +86,21 @@ res.status(200).send(details);
 //Join a server
 const joinserver=async(req,res)=>{
   try{
+    const data=await Servermember.findOne({where:{userId:req.userId,serverId:req.params.id}})
+    if(!data){
     const join=await Servermember.create({userId:req.userId,serverId:req.params.id});
     res.status(200).send(join);
-    io.emit('joined',{message:`user id ${req.userId} hopped into ${req.params.id}`})
 
+    io.emit('joined',{message:`user id ${req.userId} hopped into ${req.params.id}`})
+    }
+    if(data){
+        io.emit('online',{message:`user having id ${data.userId} is online`});
+        // io.on('listen',(data)=>{
+        //     console.log(data);
+        // })
+        
+        res.send("User already in the server");
+    }
   }
   catch(err){res.send(err.message)}
 }

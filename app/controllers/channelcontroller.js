@@ -81,7 +81,7 @@ const getchannel=async(req,res)=>{
 }
 
 
-let channel,user
+
 const sendmsg=async(req,res)=>{
     // let info={
     //     id:req.body.id,
@@ -90,8 +90,8 @@ const sendmsg=async(req,res)=>{
     // }
     
     try{
-        channel=await Channel.findOne({where:{id:req.body.id}});
-        user=await Serverchanneluser.findOne({where:{userId:req.userId,channelId:req.body.id,serverId:channel.serverId}});
+       let channel=await Channel.findOne({where:{id:req.body.id}});
+       let user=await Serverchanneluser.findOne({where:{userId:req.userId,channelId:req.body.id,serverId:channel.serverId}});
         if(user){
            
             // io.on('connection',socket=>{
@@ -115,7 +115,9 @@ const joinchannel=async(req,res)=>{
         // let channel=await Channel.findOne({where:{id:req.body.id,private_channel:false}});
         let channel=await Channel.findOne({where:{id:id}});
         const sermem=await Servermember.findOne({where:{userId:req.userId,serverId:channel.serverId}});
+        const present=await Serverchanneluser.findOne({where:{userId:req.userId,serverId:channel.serverId,channelId:id}})
 
+    if(!present){
     if((channel && channel.private_channel==false)&&(!sermem || sermem))
     {
         const data=await servermember.create({
@@ -133,7 +135,16 @@ const joinchannel=async(req,res)=>{
             role:1,
             channelId:id
         })
+
+        if(req.body.message)
+        {
+       io.join(channel.id);
+        io.brodadcast.to(channel.id).emit('joinedchannel',{message:`User with id ${req.userId} had joined in the Channel ${channel.name}`})
+        }
+        else console.log("tyoe any msg")
+
         res.status(200).send(`User added to server and the channel ${id}`);
+        
     }
 
     // const sermem=await Servermember.findOne({where:{userId:req.userId,serverId:channel.serverId}});
@@ -158,8 +169,10 @@ const joinchannel=async(req,res)=>{
     }
     else
     res.status(200).send("channel doesnt exist");
-   // io.emit('m',{message:'hello'})
+   
     }
+    else res.send('Already joined');
+}
     catch(err){res.send(err.message);}
 }
 

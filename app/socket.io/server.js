@@ -19,8 +19,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 const Name = 'Discord';
 
 
-const details=await User.findOne({where:{id:req.userId}});
-const serverdetails=await db.servermember
+// const details=await User.findOne({where:{id:req.userId}});
+// const serverdetails=await db.servermember
 
 
 io.on('connection', socket => {

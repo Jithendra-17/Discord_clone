@@ -12,7 +12,6 @@ let io=socketio(server);
 module.exports=io;
 
 
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -60,6 +59,8 @@ server.listen(PORT,()=>{
     console.log(`server running on ${PORT}`);
 });
 
-
+// io.of("/user").on("connection", (socket) => {
+//     console.log('contd1');
+//   });
 
 
