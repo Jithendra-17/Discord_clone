@@ -207,6 +207,30 @@ else{res.send("Not accessable")}
 }
 
 
+const gotochannel=async(req,res)=>{
+    try{
+        const cd=await Serverchanneluser.findOne({where:{userId:req.userId,channelId:req.body.channelId,serverId:req.body.serverId}});
+        if(cd && req.body.message)
+        {
+            io.sockets.on('connection',socket=>{
+                socket.join(req.body.channelId);
+
+                socket.broadcast.to(req.body.channelId)
+                .emit('message',req.body.message)
+
+                // socket.emit('message',req.body.message);
+
+            })
+            res.send('msg sent')
+        }
+        else
+        {
+            res.send('Unable to go to channel')
+        }
+    }
+    catch(err){res.send(err.message)}
+}
+
 module.exports={
-    createChannel,sendmsg,getchannel,joinchannel,getusersofchannel,
+    createChannel,sendmsg,getchannel,joinchannel,getusersofchannel,gotochannel,
 }

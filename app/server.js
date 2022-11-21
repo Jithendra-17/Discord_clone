@@ -59,8 +59,7 @@ server.listen(PORT,()=>{
     console.log(`server running on ${PORT}`);
 });
 
-// io.of("/user").on("connection", (socket) => {
-//     console.log('contd1');
-//   });
-
+// io.on('connection',socket=>{
+//     console.log('from serve.js ',socket.id)
+// })
 

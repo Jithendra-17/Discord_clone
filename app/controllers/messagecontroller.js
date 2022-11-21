@@ -19,8 +19,20 @@ const sendmsg=async(req,res)=>{
 //   id.emit('msg',{name:'jith'})
 // //   io.emit('emit msg',{ name1:'dj'})
 // })
+// const sockets = await io.fetchSockets();
 res.send('hello')
-console.log(req.socket);
+// for (const socket of sockets) {
+//     console.log("this is the for loop answer",socket.id);
+//     socket.emit('m',{msg:'hellllllo'})
+//   }
+// console.log(sockets);
+//////////////////////////////////////
+// io.sockets.on('connection',socket=>{
+
+// })
+
+
+
 }
 
 
