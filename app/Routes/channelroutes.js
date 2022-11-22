@@ -9,5 +9,7 @@ channelrouter.post('/sendmsg',authenticateToken,channelcontroller.sendmsg);
 channelrouter.post('/joinchannel/:id',authenticateToken,channelcontroller.joinchannel);
 channelrouter.post('/channelmembers',authenticateToken,channelcontroller.getusersofchannel);
 channelrouter.post('/gotochannel',authenticateToken,channelcontroller.gotochannel);
+// channelrouter.get('/gotochannel',authenticateToken,channelcontroller.gotochannel);
+
 
 module.exports=channelrouter;

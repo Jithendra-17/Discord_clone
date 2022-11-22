@@ -212,16 +212,27 @@ const gotochannel=async(req,res)=>{
         const cd=await Serverchanneluser.findOne({where:{userId:req.userId,channelId:req.body.channelId,serverId:req.body.serverId}});
         if(cd && req.body.message)
         {
-            io.sockets.on('connection',socket=>{
-                socket.join(req.body.channelId);
+            const msgdata=await db.messages.create({sender:req.userId,
+            msg:req.body.message,channelId:req.body.channelId,
+        serverId:req.body.serverId})
+            // io.sockets.on('connection',socket=>{
+                
+            //     // socket.join(req.body.channelId);
 
-                socket.broadcast.to(req.body.channelId)
-                .emit('message',req.body.message)
+            //     // socket.broadcast.to(req.body.channelId)
+            //     // .emit('message',req.body.message)
 
-                // socket.emit('message',req.body.message);
+                io.emit('message',req.body.message);
+                // io.sockets.on('message',(d)=>console.log('data from',d))
 
-            })
-            res.send('msg sent')
+            // })
+            return res.send('msg sent')
+        }
+        if(cd && !req.body.message)
+        {
+            const d=await db.messages.findAll({where:{channelId:req.body.channelId,serverId:req.body.serverId}})
+            res.send(d);
+
         }
         else
         {
