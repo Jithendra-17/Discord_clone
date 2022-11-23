@@ -217,12 +217,16 @@ const gotochannel=async(req,res)=>{
         serverId:req.body.serverId})
             // io.sockets.on('connection',socket=>{
                 
-            //     // socket.join(req.body.channelId);
+                // socket.join(req.body.channelId);
 
-            //     // socket.broadcast.to(req.body.channelId)
-            //     // .emit('message',req.body.message)
+                // socket.broadcast.to(req.body.channelId)
+                // .emit(`${req.body.channelId}-${req.body.serverId}`,req.body.message)
 
-                io.emit('message',req.body.message);
+// socket.broadcast.emit(`${req.body.channelId}-${req.body.serverId}`,req.body.message)
+io.emit(`${req.body.channelId}-${req.body.serverId}`,req.body.message)
+
+
+                // io.emit('message',req.body.message);
                 // io.sockets.on('message',(d)=>console.log('data from',d))
 
             // })

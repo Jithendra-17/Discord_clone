@@ -37,7 +37,7 @@ const getallservers=async(req,res)=>{
     try{
         const server=await Servermember.findAll( {where:
             {userId:req.userId},
-           attributes:[],
+           attributes:['id'],
              include : [
             {
                 model : db.servers,
